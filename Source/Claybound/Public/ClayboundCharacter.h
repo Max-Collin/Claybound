@@ -31,6 +31,10 @@ class CLAYBOUND_API AClayboundCharacter : public ACharacter
 	/*Look Input Action*/
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* LookAction;
+	
+	/*Target Lock Input Action*/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* TargetLockAction;
 
 public:
 	// Sets default values for this character's properties
@@ -63,6 +67,12 @@ protected:
 	
 	virtual void Jump() override;
 	
+	void ToggleTargetLock();
+	
+	AActor* FindBestTarget();
+	void TargetLockMovement(float DeltaTime);
+
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	TObjectPtr<USkeletalMeshComponent> HeadMesh;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
@@ -80,6 +90,21 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = Camera)
 	class UCameraComponent* FollowCamera;
+	
+	/*
+	 * Target Lock Properties
+	 */
+	
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Target Lock", meta = (AllowPrivateAccess = "true"))
+	float LockOnRadius = 1000.f;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Target Lock", meta = (AllowPrivateAccess = "true"))
+	float RotationInterpSpeed = 5.f;
+
+	bool bIsLockedOn = false;
+
+	UPROPERTY()
+	AActor* LockedTarget = nullptr;
 public:	
 	
 	
